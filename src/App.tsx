@@ -28,71 +28,16 @@ import {
   LogOut, 
   Info,
   Sparkles,
-  ShoppingBag
+  ShoppingBag,
+  Settings
 } from 'lucide-react';
 import { ShoppingList, ShoppingItem, ThemeMode, AppBackup, User as UserType } from './types';
 import BarcodeScanner from './components/BarcodeScanner';
 
 // Default mock lists for beautiful first-load representation
-const INITIAL_LISTS: ShoppingList[] = [
-  {
-    id: 'list-1',
-    name: 'Feira Semanal 🍎',
-    color: '#A8DF8E', // Mint
-    createdAt: Date.now() - 100000,
-    userId: null
-  },
-  {
-    id: 'list-2',
-    name: 'Supermercado Mensal 🛒',
-    color: '#FFC5C5', // Pink
-    createdAt: Date.now() - 50000,
-    userId: null
-  }
-];
+const INITIAL_LISTS: ShoppingList[] = [];
 
-const INITIAL_ITEMS: ShoppingItem[] = [
-  {
-    id: 'item-1',
-    listId: 'list-1',
-    name: 'Bananas Caturra',
-    quantity: 6,
-    unitPrice: 1.20,
-    checked: false,
-    photo: null,
-    createdAt: Date.now() - 90000
-  },
-  {
-    id: 'item-2',
-    listId: 'list-1',
-    name: 'Morangos Frescos',
-    quantity: 2,
-    unitPrice: 7.50,
-    checked: true,
-    photo: null,
-    createdAt: Date.now() - 80000
-  },
-  {
-    id: 'item-3',
-    listId: 'list-2',
-    name: 'Arroz Integral 5kg',
-    quantity: 1,
-    unitPrice: 22.90,
-    checked: false,
-    photo: null,
-    createdAt: Date.now() - 40000
-  },
-  {
-    id: 'item-4',
-    listId: 'list-2',
-    name: 'Leite Semi-desnatado',
-    quantity: 12,
-    unitPrice: 4.80,
-    checked: false,
-    photo: null,
-    createdAt: Date.now() - 30000
-  }
-];
+const INITIAL_ITEMS: ShoppingItem[] = [];
 
 // Hex Preset Palette for list creation
 const COLOR_PRESETS = [
@@ -148,6 +93,10 @@ export default function App() {
   // Scanner State
   const [isScannerOpen, setIsScannerOpen] = useState(false);
 
+  // Avatar and Settings States
+  const [isAvatarMenuOpen, setIsAvatarMenuOpen] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+
   // FAB Menu States
   const [isFabMenuOpen, setIsFabMenuOpen] = useState(false);
   const [fabInputValue, setFabInputValue] = useState('');
@@ -177,10 +126,7 @@ export default function App() {
     if (storedTheme) {
       setTheme(storedTheme);
     } else {
-      // Check system preference
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        setTheme('dark');
-      }
+      setTheme('light');
     }
 
     // Load user session
@@ -217,9 +163,7 @@ export default function App() {
 
   // Sync state changes with localStorage
   useEffect(() => {
-    if (lists.length > 0) {
-      localStorage.setItem('shopping_list_data_lists', JSON.stringify(lists));
-    }
+    localStorage.setItem('shopping_list_data_lists', JSON.stringify(lists));
   }, [lists]);
 
   useEffect(() => {
@@ -366,7 +310,7 @@ export default function App() {
       
       localStorage.setItem('shopping_list_user', JSON.stringify(sessionUser));
       setUser(sessionUser);
-      showToast('Registro realizado com sucesso! (JWT simulado gerado)');
+      showToast('Registro realizado com sucesso!');
     } else {
       // Login mode
       const usersRaw = localStorage.getItem('simulated_users') || '[]';
@@ -732,7 +676,7 @@ export default function App() {
                 {authMode === 'login' ? 'Conectar Conta' : 'Criar Nova Conta'}
               </h2>
               <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Acesse suas listas seguras com JWT simulado
+                Acesse suas listas com segurança de qualquer dispositivo
               </p>
             </div>
 
@@ -798,7 +742,7 @@ export default function App() {
                 )}
                 
                 <button onClick={() => setAuthMode('guest')} class="text-[#3A4D39] dark:text-[#A8DF8E] font-bold hover:underline">
-                  Pular &amp; Usar Local 🐾
+                  Continuar como Visitante 🐾
                 </button>
               </div>
             </div>
@@ -819,99 +763,97 @@ export default function App() {
               Lista de Compras
             </h1>
             <p class="text-[10px] text-gray-400 dark:text-gray-500 font-mono">
-              {user ? `CONECTADO: @${user.username}` : 'MODO LOCAL VISITANTE 🐾'}
+              {user ? `CONECTADO: @${user.username}` : 'SESSÃO LOCAL 🐾'}
             </p>
           </div>
         </div>
 
-        {/* Global Controls */}
+        {/* Global Controls - Avatar Button */}
         <div class="flex items-center gap-2">
-          
-          {/* Simulated Login / Session Button */}
-          {user ? (
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-semibold bg-[#A8DF8E]/10 dark:bg-emerald-800/10 text-emerald-800 dark:text-emerald-400 px-2.5 py-1 rounded-full hidden sm:inline-flex items-center gap-1">
-                <User class="w-3.5 h-3.5" /> @{user.username}
-              </span>
-              <button 
-                id="logout-btn"
-                onClick={handleLogout}
-                title="Desconectar"
-                class="p-2.5 bg-gray-100 dark:bg-[#342B46] hover:bg-red-50 dark:hover:bg-red-950/20 text-gray-600 dark:text-gray-300 hover:text-red-500 rounded-2xl transition-all"
-              >
-                <LogOut class="w-4 h-4" />
-              </button>
-            </div>
-          ) : (
+          <div class="relative">
             <button 
-              id="login-btn"
-              onClick={() => { setAuthMode('login'); setAuthError(''); }}
-              class="px-3.5 py-2 bg-[#A8DF8E]/20 text-[#3A4D39] dark:text-[#A8DF8E] font-semibold text-xs rounded-full hover:bg-[#A8DF8E]/30 transition-all flex items-center gap-1.5"
+              id="avatar-menu-trigger"
+              onClick={() => setIsAvatarMenuOpen(!isAvatarMenuOpen)}
+              class="w-10 h-10 rounded-full bg-white dark:bg-[#2C243B] border-2 border-[#A8DF8E] dark:border-[#8ECA62]/60 hover:scale-105 transition-all duration-200 flex items-center justify-center text-gray-700 dark:text-gray-200 shadow-md cursor-pointer"
             >
-              <User class="w-3.5 h-3.5" /> Entrar
+              {user ? (
+                <span class="text-xs font-bold font-display uppercase text-[#3A4D39] dark:text-[#A8DF8E]">
+                  {user.username.substring(0, 2)}
+                </span>
+              ) : (
+                <User class="w-4 h-4 text-[#3A4D39] dark:text-[#A8DF8E]" />
+              )}
             </button>
-          )}
 
-          {/* Theme Toggler */}
-          <button 
-            id="theme-toggler-btn"
-            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-            class="p-2.5 bg-gray-100 dark:bg-[#2C243B] rounded-2xl text-gray-600 dark:text-gray-300 hover:bg-[#A8DF8E]/20 transition-all border border-transparent dark:border-[#3a2f50]"
-            title="Mudar Tema"
-          >
-            {theme === 'light' ? <Moon class="w-4 h-4 text-slate-700" /> : <Sun class="w-4 h-4 text-amber-300" />}
-          </button>
+            {/* Floating Avatar Menu */}
+            {isAvatarMenuOpen && (
+              <>
+                {/* Invisible backdrop to close the menu */}
+                <div class="fixed inset-0 z-30" onClick={() => setIsAvatarMenuOpen(false)}></div>
+                <div class="absolute right-0 mt-2 w-56 bg-white dark:bg-[#2C243B] rounded-2xl shadow-xl border border-gray-100 dark:border-[#FAF8F5]/10 py-2.5 z-40 text-sm animate-fade-in text-gray-800 dark:text-gray-100 meow-shadow-lg">
+                  {user ? (
+                    <div class="px-4 py-2 border-b border-gray-50 dark:border-[#342B46]/30 mb-1.5">
+                      <p class="text-xs font-semibold text-gray-400 uppercase">Sessão Ativa</p>
+                      <p class="font-bold text-gray-800 dark:text-gray-100 truncate">@{user.username}</p>
+                    </div>
+                  ) : (
+                    <div class="px-4 py-2 border-b border-gray-50 dark:border-[#342B46]/30 mb-1.5">
+                      <p class="text-xs font-semibold text-gray-400 uppercase">Sessão Local</p>
+                      <p class="font-bold text-gray-500 dark:text-gray-400">Modo Visitante 🐾</p>
+                    </div>
+                  )}
 
+                  {/* Option: Login/Register (if guest) */}
+                  {!user ? (
+                    <button
+                      onClick={() => {
+                        setIsAvatarMenuOpen(false);
+                        setAuthMode('login');
+                        setAuthError('');
+                      }}
+                      class="w-full text-left px-4 py-2 hover:bg-[#A8DF8E]/15 dark:hover:bg-[#A8DF8E]/10 flex items-center gap-2.5 font-medium transition-colors cursor-pointer"
+                    >
+                      <User class="w-4 h-4 text-emerald-500" />
+                      <span>Entrar / Criar Conta</span>
+                    </button>
+                  ) : null}
+
+                  {/* Option: Settings */}
+                  <button
+                    onClick={() => {
+                      setIsAvatarMenuOpen(false);
+                      setIsSettingsModalOpen(true);
+                    }}
+                    class="w-full text-left px-4 py-2 hover:bg-[#A8DF8E]/15 dark:hover:bg-[#A8DF8E]/10 flex items-center gap-2.5 font-medium transition-colors cursor-pointer"
+                  >
+                    <Settings class="w-4 h-4 text-amber-500" />
+                    <span>Configurações</span>
+                  </button>
+
+                  {user ? (
+                    <>
+                      <div class="border-t border-gray-50 dark:border-[#342B46]/30 my-1.5"></div>
+                      <button
+                        onClick={() => {
+                          setIsAvatarMenuOpen(false);
+                          handleLogout();
+                        }}
+                        class="w-full text-left px-4 py-2 hover:bg-red-50 dark:hover:bg-red-950/20 flex items-center gap-2.5 font-medium text-red-500 transition-colors cursor-pointer"
+                      >
+                        <LogOut class="w-4 h-4" />
+                        <span>Sair da Conta</span>
+                      </button>
+                    </>
+                  ) : null}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </header>
 
       {/* MAIN CONTAINER */}
       <main class="max-w-md mx-auto px-4 py-6 space-y-6">
-
-        {/* Database backup notification / simulated local info bar */}
-        <div id="db-notice-card" class="bg-amber-50 dark:bg-[#2C243B] border-l-4 border-amber-400 dark:border-amber-500 p-4 rounded-r-2xl text-xs space-y-2.5">
-          <div class="flex items-start gap-2.5">
-            <Info class="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-            <div>
-              <p class="font-semibold text-amber-900 dark:text-amber-300">Banco de Dados Offline-First ativo</p>
-              <p class="text-amber-700 dark:text-gray-400 mt-0.5">
-                Seus dados estão sendo salvos com segurança no armazenamento local do seu navegador. Você pode exportar backups ou enviar para o WhatsApp livremente.
-              </p>
-            </div>
-          </div>
-          
-          <div class="flex items-center gap-2 pt-1 flex-wrap">
-            <button 
-              id="export-backup-btn"
-              onClick={handleExportBackup}
-              class="inline-flex items-center gap-1 px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-semibold text-[10px] transition-all cursor-pointer"
-            >
-              <Download class="w-3 h-3" /> Exportar Backup JSON
-            </button>
-            <button 
-              id="import-backup-btn"
-              onClick={handleImportBackupClick}
-              class="inline-flex items-center gap-1 px-3 py-1.5 bg-[#FAF8F5] dark:bg-[#342B46] text-gray-700 dark:text-gray-300 hover:bg-gray-100 rounded-lg font-semibold text-[10px] border border-gray-200 dark:border-transparent transition-all cursor-pointer"
-            >
-              <Upload class="w-3 h-3" /> Importar Backup
-            </button>
-            <input 
-              id="backup-file-input"
-              ref={fileInputRef} 
-              type="file" 
-              accept=".json" 
-              onChange={handleImportBackupFile} 
-              class="hidden" 
-            />
-          </div>
-          
-          {/* Cloud SQL relocation pitch */}
-          <div class="pt-2 border-t border-amber-200 dark:border-amber-900/30">
-            <p class="text-[10px] text-amber-600/80 dark:text-gray-500 flex items-center gap-1 font-mono">
-              <Database class="w-3 h-3" /> PRÓXIMO PASSO: Configurar Firebase Firestore para sincronização automática em tempo real em múltiplos aparelhos!
-            </p>
-          </div>
-        </div>
 
         {/* LIST BUILDER ACTIONS */}
         <div class="flex justify-between items-center">
@@ -947,13 +889,13 @@ export default function App() {
                 <div 
                   key={list.id} 
                   id={`list-card-${list.id}`}
-                  class="bg-white dark:bg-[#2C243B] rounded-3xl overflow-hidden meow-shadow border border-gray-100 dark:border-[#FAF8F5]/5 flex flex-col"
+                  class="bg-white dark:bg-[#2C243B] rounded-3xl overflow-visible meow-shadow border border-gray-100 dark:border-[#FAF8F5]/5 flex flex-col"
                 >
                   
                   {/* TITLE BAR (custom color) */}
                   <div 
                     id={`list-card-header-${list.id}`}
-                    class="px-5 py-4 flex items-center justify-between text-gray-800 font-semibold relative select-none"
+                    class="px-5 py-4 flex items-center justify-between text-gray-800 font-semibold relative select-none rounded-t-3xl"
                     style={{ borderLeft: `8px solid ${list.color}` }}
                   >
                     {/* Toggle expand by clicking the header info area */}
@@ -1065,7 +1007,7 @@ export default function App() {
                   </div>
 
                   {/* SECONDARY BAR (x/y item check count) */}
-                  <div class="bg-gray-50 dark:bg-[#342B46]/40 px-5 py-2 flex justify-between items-center border-t border-gray-100 dark:border-[#FAF8F5]/5 text-[11px] font-semibold text-gray-500 dark:text-gray-400 font-mono select-none">
+                  <div class={`bg-gray-50 dark:bg-[#342B46]/40 px-5 py-2 flex justify-between items-center border-t border-gray-100 dark:border-[#FAF8F5]/5 text-[11px] font-semibold text-gray-500 dark:text-gray-400 font-mono select-none ${!isExpanded ? 'rounded-b-3xl' : ''}`}>
                     <span>PROGRESSO</span>
                     <span class="bg-[#A8DF8E]/20 text-[#3A4D39] dark:text-[#A8DF8E] px-2 py-0.5 rounded-full">
                       {checkedItems.length}/{listItems.length} Comprados
@@ -1074,7 +1016,7 @@ export default function App() {
 
                   {/* ITEM LAYOUT BODY */}
                   {isExpanded && (
-                    <div class="p-3 bg-white dark:bg-[#2C243B] border-t border-gray-100 dark:border-[#FAF8F5]/5 space-y-1">
+                    <div class="p-3 bg-white dark:bg-[#2C243B] border-t border-gray-100 dark:border-[#FAF8F5]/5 space-y-1 rounded-b-3xl">
                       {listItems.length === 0 ? (
                         <div class="text-center py-6 text-gray-400 text-xs">
                           Nenhum item nesta lista. Use o botão + para adicionar!
@@ -1553,6 +1495,126 @@ export default function App() {
                     Salvar
                   </button>
                 </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* 6. USER SETTINGS MODAL */}
+      {isSettingsModalOpen && (
+        <div id="settings-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div class="bg-[#FAF8F5] dark:bg-[#1F1A24] w-full max-w-md rounded-3xl p-6 meow-shadow-lg border-2 border-gray-100 dark:border-[#3a2f50] max-h-[90vh] overflow-y-auto animate-fade-in">
+            
+            {/* Header */}
+            <div class="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-[#342B46]/40 mb-5">
+              <h3 class="text-xl font-display font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                <Settings class="w-5 h-5 text-amber-500 animate-spin-slow" />
+                Configurações
+              </h3>
+              <button 
+                onClick={() => setIsSettingsModalOpen(false)}
+                class="p-1.5 rounded-full bg-white dark:bg-[#2C243B] text-gray-400 hover:text-gray-600 dark:hover:text-white border border-gray-100 dark:border-transparent transition-colors cursor-pointer"
+              >
+                <X class="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div class="space-y-6">
+              
+              {/* Theme Settings section */}
+              <div class="bg-white dark:bg-[#2C243B] rounded-2xl p-4 border border-gray-100 dark:border-transparent meow-shadow">
+                <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Aparência</h4>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Modo Escuro</span>
+                  <button 
+                    onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+                    class="p-2 bg-[#FAF8F5] dark:bg-[#1F1A24] rounded-xl text-gray-600 dark:text-gray-300 border border-gray-100 dark:border-[#342B46]/40 hover:scale-105 transition-all flex items-center gap-2 cursor-pointer"
+                  >
+                    {theme === 'light' ? (
+                      <>
+                        <Moon class="w-4 h-4 text-slate-700" />
+                        <span class="text-xs font-semibold">Ativar</span>
+                      </>
+                    ) : (
+                      <>
+                        <Sun class="w-4 h-4 text-amber-300" />
+                        <span class="text-xs font-semibold">Desativar</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Backup section */}
+              <div class="bg-white dark:bg-[#2C243B] rounded-2xl p-4 border border-gray-100 dark:border-transparent meow-shadow space-y-4">
+                <div>
+                  <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Cópia de Segurança (Backup)</h4>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                    Seus dados de listas e itens de compras estão salvos de forma 100% segura no seu navegador. Exporte ou importe arquivos de backup abaixo.
+                  </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-2 pt-1">
+                  <button 
+                    onClick={handleExportBackup}
+                    class="inline-flex items-center justify-center gap-2 w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold text-xs transition-all cursor-pointer shadow-sm"
+                  >
+                    <Download class="w-4 h-4" /> Exportar Backup JSON
+                  </button>
+                  <button 
+                    onClick={handleImportBackupClick}
+                    class="inline-flex items-center justify-center gap-2 w-full py-2.5 bg-[#FAF8F5] dark:bg-[#1F1A24] text-gray-700 dark:text-gray-300 hover:bg-gray-100 rounded-xl font-bold text-xs border border-gray-200 dark:border-[#342B46]/40 transition-all cursor-pointer"
+                  >
+                    <Upload class="w-4 h-4" /> Importar Backup
+                  </button>
+                </div>
+              </div>
+
+              {/* Session Status Section */}
+              <div class="bg-white dark:bg-[#2C243B] rounded-2xl p-4 border border-gray-100 dark:border-transparent meow-shadow">
+                <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Conta do Usuário</h4>
+                {user ? (
+                  <div class="space-y-3">
+                    <div class="flex justify-between items-center text-sm">
+                      <span class="text-gray-500">Usuário:</span>
+                      <span class="font-bold">@{user.username}</span>
+                    </div>
+                    <button 
+                      onClick={() => {
+                        setIsSettingsModalOpen(false);
+                        handleLogout();
+                      }}
+                      class="w-full py-2.5 bg-red-50 dark:bg-red-950/20 hover:bg-red-100 dark:hover:bg-red-950/40 text-red-600 dark:text-red-400 font-semibold text-xs rounded-xl transition-colors cursor-pointer"
+                    >
+                      Sair desta Conta
+                    </button>
+                  </div>
+                ) : (
+                  <div class="space-y-2">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                      Você está usando o app como visitante. Crie uma conta para salvar e gerenciar suas listas com segurança.
+                    </p>
+                    <button 
+                      onClick={() => {
+                        setIsSettingsModalOpen(false);
+                        setAuthMode('login');
+                        setAuthError('');
+                      }}
+                      class="w-full py-2.5 bg-[#A8DF8E] hover:bg-[#96ce7c] text-gray-800 font-bold text-xs rounded-xl transition-colors cursor-pointer"
+                    >
+                      Entrar ou Registrar-se
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Version info footer */}
+              <div class="text-center text-[10px] text-gray-400 dark:text-gray-500 font-mono">
+                SHOPPING LIST MEOW STYLE • VERSÃO 1.0.0
               </div>
 
             </div>

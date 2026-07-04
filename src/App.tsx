@@ -1437,7 +1437,7 @@ export default function App() {
             // reset fields
             setFabInputValue('');
           }}
-          class="w-14 h-14 bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer relative"
+          class="w-[68px] h-[68px] bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white rounded-[1.5rem] flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer relative"
         >
           {isFabMenuOpen ? <X class="w-6 h-6" /> : <Plus class="w-6 h-6" />}
 

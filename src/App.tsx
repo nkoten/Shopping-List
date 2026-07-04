@@ -1057,8 +1057,8 @@ export default function App() {
                   {/* TITLE BAR (custom color) */}
                   <div
                     id={`list-card-header-${list.id}`}
-                    class="px-5 py-4 flex items-center justify-between text-gray-800 font-semibold relative select-none rounded-t-3xl"
-                    style={{ borderLeft: `8px solid ${list.color}` }}
+                    class="list-card-header px-5 py-4 flex items-center justify-between text-slate-800 font-semibold relative select-none rounded-t-3xl transition-colors"
+                    style={{ backgroundColor: list.color }}
                   >
                     {/* Toggle expand by clicking the header info area */}
                     <div
@@ -1070,14 +1070,10 @@ export default function App() {
                       }
                       class="flex-1 cursor-pointer flex flex-col"
                     >
-                      <span class="font-display font-bold text-base text-gray-800 dark:text-gray-100 flex items-center gap-1.5">
-                        <span
-                          class="w-3 h-3 rounded-full"
-                          style={{ backgroundColor: list.color }}
-                        ></span>
+                      <span class="font-display font-bold text-base text-slate-900 flex items-center gap-1.5">
                         {list.name}
                       </span>
-                      <span class="text-[10px] text-gray-400 font-mono mt-0.5">
+                      <span class="text-[10px] text-slate-700 font-mono mt-0.5">
                         {listItems.length}{' '}
                         {listItems.length === 1 ? 'item' : 'itens'} no total
                       </span>
@@ -1087,7 +1083,7 @@ export default function App() {
                     <div class="flex items-center gap-1">
                       {/* Cost indicator */}
                       {totalCost > 0 && (
-                        <span class="text-xs font-mono font-bold bg-[#FAF8F5] dark:bg-[#22272a] text-emerald-600 dark:text-[#A8DF8E] px-2 py-1 rounded-full border border-gray-100 dark:border-transparent mr-1">
+                        <span class="text-xs font-mono font-bold bg-white/80 text-emerald-800 px-2 py-1 rounded-full shadow-sm mr-1">
                           R$ {totalCost.toFixed(2)}
                         </span>
                       )}
@@ -1099,7 +1095,7 @@ export default function App() {
                           onClick={() =>
                             setActiveMenuId(isMenuOpen ? null : list.id)
                           }
-                          class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-[#232a2d] text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors"
+                          class="p-1.5 rounded-full hover:bg-black/5 text-slate-700 hover:text-slate-900 transition-colors"
                         >
                           <MoreVertical class="w-4 h-4" />
                         </button>
@@ -1182,7 +1178,7 @@ export default function App() {
                             [list.id]: !isExpanded,
                           })
                         }
-                        class="p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-[#232a2d] text-gray-400"
+                        class="p-1.5 rounded-full hover:bg-black/5 text-slate-700 hover:text-slate-900 transition-colors"
                       >
                         {isExpanded ? (
                           <ChevronUp class="w-4 h-4" />

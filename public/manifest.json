@@ -1,0 +1,19 @@
+{
+  "short_name": "Shopping List",
+  "name": "Shopping List - Lista de Compras",
+  "description": "Crie e gerencie suas listas de compras com facilidade, cores customizadas, backup offline e scanner de produtos.",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#F4F2DE",
+  "theme_color": "#A8DF8E",
+  "display": "standalone",
+  "orientation": "portrait",
+  "categories": ["shopping", "productivity"]
+}

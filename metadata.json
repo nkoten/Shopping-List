@@ -1,0 +1,8 @@
+{
+  "name": "Shopping List",
+  "description": "A feature-rich shopping list application with multiple lists, smart quantity parsing, bar code scanning via Open Food Facts, themes inspired by Meow Money Manager, JWT login simulation, and full offline PWA support.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

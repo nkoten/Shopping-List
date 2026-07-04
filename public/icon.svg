@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2F4C5" />
+      <stop offset="100%" stop-color="#A8DF8E" />
+    </linearGradient>
+  </defs>
+  <!-- Background with smooth rounded corners -->
+  <rect width="512" height="512" rx="128" fill="url(#bgGrad)" />
+  
+  <!-- Shopping Basket Base -->
+  <path d="M100,280 L412,280 L370,450 C368,460 360,470 350,470 L162,470 C152,470 144,460 142,450 Z" fill="#F4F2DE" stroke="#4F6F52" stroke-width="16" stroke-linejoin="round" />
+  
+  <!-- Cat Ears -->
+  <path d="M160,180 L130,90 L210,140 Z" fill="#E8D8C8" stroke="#4F6F52" stroke-width="14" stroke-linejoin="round" />
+  <path d="M352,180 L382,90 L302,140 Z" fill="#E8D8C8" stroke="#4F6F52" stroke-width="14" stroke-linejoin="round" />
+  <!-- Ear Inner Pink -->
+  <path d="M165,160 L145,105 L195,135 Z" fill="#FFC5C5" />
+  <path d="M347,160 L367,105 L317,135 Z" fill="#FFC5C5" />
+
+  <!-- Cat Head -->
+  <ellipse cx="256" cy="190" rx="110" ry="85" fill="#FAF8F5" stroke="#4F6F52" stroke-width="16" />
+  
+  <!-- Cat Eyes -->
+  <ellipse cx="210" cy="185" rx="10" ry="14" fill="#3A4D39" />
+  <ellipse cx="302" cy="185" rx="10" ry="14" fill="#3A4D39" />
+  <!-- Eye Highlights -->
+  <circle cx="207" cy="180" r="4" fill="#FFFFFF" />
+  <circle cx="299" cy="180" r="4" fill="#FFFFFF" />
+
+  <!-- Cat Nose/Mouth -->
+  <path d="M256,198 C250,198 244,202 244,208 C244,214 251,216 256,211 C261,216 268,214 268,208 C268,202 262,198 256,198 Z" fill="#FF8A8A" stroke="#4F6F52" stroke-width="4" />
+  <path d="M256,198 L256,206" stroke="#4F6F52" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Cat Whiskers -->
+  <line x1="120" y1="190" x2="80" y2="185" stroke="#4F6F52" stroke-width="8" stroke-linecap="round" />
+  <line x1="120" y1="205" x2="75" y2="210" stroke="#4F6F52" stroke-width="8" stroke-linecap="round" />
+  <line x1="392" y1="190" x2="432" y2="185" stroke="#4F6F52" stroke-width="8" stroke-linecap="round" />
+  <line x1="392" y1="205" x2="437" y2="210" stroke="#4F6F52" stroke-width="8" stroke-linecap="round" />
+
+  <!-- Cute Blush -->
+  <circle cx="175" cy="205" r="14" fill="#FFAAC9" opacity="0.6" />
+  <circle cx="337" cy="205" r="14" fill="#FFAAC9" opacity="0.6" />
+
+  <!-- Basket Handle -->
+  <path d="M120,280 C120,130 392,130 392,280" fill="none" stroke="#F4F2DE" stroke-width="20" stroke-linecap="round" opacity="0.9" />
+  <path d="M120,280 C120,130 392,130 392,280" fill="none" stroke="#4F6F52" stroke-width="10" stroke-linecap="round" stroke-dasharray="15 15" />
+
+  <!-- Cute Paw resting on Basket -->
+  <path d="M160,280 C160,260 190,260 190,280 Z" fill="#FAF8F5" stroke="#4F6F52" stroke-width="12" />
+  <path d="M322,280 C322,260 352,260 352,280 Z" fill="#FAF8F5" stroke="#4F6F52" stroke-width="12" />
+
+  <!-- Grid lines on basket for texture -->
+  <line x1="180" y1="280" x2="200" y2="470" stroke="#4F6F52" stroke-width="8" opacity="0.3" />
+  <line x1="256" y1="280" x2="256" y2="470" stroke="#4F6F52" stroke-width="8" opacity="0.3" />
+  <line x1="332" y1="280" x2="312" y2="470" stroke="#4F6F52" stroke-width="8" opacity="0.3" />
+  <line x1="120" y1="340" x2="392" y2="340" stroke="#4F6F52" stroke-width="8" opacity="0.3" />
+  <line x1="130" y1="400" x2="382" y2="400" stroke="#4F6F52" stroke-width="8" opacity="0.3" />
+</svg>

@@ -31,6 +31,7 @@ import {
   ShoppingBag,
   Settings,
 } from 'lucide-react';
+import { PiDiamondsFourDuotone, PiListBulletsDuotone } from 'react-icons/pi';
 import {
   ShoppingList,
   ShoppingItem,
@@ -905,7 +906,7 @@ export default function App() {
             <h1 class="text-xl font-display font-bold tracking-tight text-gray-800 dark:text-gray-100 flex items-center gap-1">
               Lista de Compras
             </h1>
-            <p class="text-[10px] text-gray-400 dark:text-gray-500 font-mono">
+            <p class="text-[11.2px] text-gray-400 dark:text-gray-500 font-mono">
               {user ? `CONECTADO: @${user.username}` : 'SESSÃO LOCAL 🐾'}
             </p>
           </div>
@@ -1073,7 +1074,7 @@ export default function App() {
                       <span class="font-display font-bold text-base text-slate-900 flex items-center gap-1.5">
                         {list.name}
                       </span>
-                      <span class="text-[10px] text-slate-700 font-mono mt-0.5">
+                      <span class="text-[11.2px] text-slate-700 font-mono mt-0.5">
                         {listItems.length}{' '}
                         {listItems.length === 1 ? 'item' : 'itens'} no total
                       </span>
@@ -1088,7 +1089,7 @@ export default function App() {
                         </span>
                       )}
 
-                      {/* 3-dot dropdown menu trigger */}
+                      {/* card menu trigger 3-dot dropdown menu trigger */}
                       <div class="relative">
                         <button
                           id={`list-menu-trigger-${list.id}`}
@@ -1097,7 +1098,9 @@ export default function App() {
                           }
                           class="p-1.5 rounded-full hover:bg-black/5 text-slate-700 hover:text-slate-900 transition-colors"
                         >
-                          <MoreVertical class="w-4 h-4" />
+                          <PiListBulletsDuotone class="w-6 h-6" />
+                          {/* <PiDiamondsFourDuotone class="w-6 h-6" /> */}
+                          {/* <MoreVertical class="w-4 h-4" /> */}
                         </button>
 
                         {/* DROPDOWN CONTAINER */}
@@ -1181,9 +1184,9 @@ export default function App() {
                         class="p-1.5 rounded-full hover:bg-black/5 text-slate-700 hover:text-slate-900 transition-colors"
                       >
                         {isExpanded ? (
-                          <ChevronUp class="w-4 h-4" />
+                          <ChevronUp class="w-6 h-6" />
                         ) : (
-                          <ChevronDown class="w-4 h-4" />
+                          <ChevronDown class="w-6 h-6" />
                         )}
                       </button>
                     </div>
@@ -1242,7 +1245,7 @@ export default function App() {
                                   {item.name}
                                 </span>
                                 {item.comment && (
-                                  <span class="text-[10px] text-gray-400 truncate max-w-xs italic">
+                                  <span class="text-[11.2px] text-gray-400 truncate max-w-xs italic">
                                     {item.comment}
                                   </span>
                                 )}
@@ -1357,7 +1360,7 @@ export default function App() {
                   <Camera class="w-4 h-4" />
                 </button>
               </div>
-              <p class="text-[10px] text-gray-400 dark:text-gray-500">
+              <p class="text-[11.2px] text-gray-400 dark:text-gray-500">
                 Pressione <span class="font-semibold text-gray-500">Enter</span>{' '}
                 ou <span class="font-semibold text-gray-500">Vírgula</span> para
                 transformar em chip. Suporta quantidade no início ou fim!
@@ -1443,7 +1446,7 @@ export default function App() {
 
           {/* Notification badge if temp items are pending */}
           {fabTempChips.length > 0 && !isFabMenuOpen && (
-            <span class="absolute -top-1.5 -right-1.5 bg-red-500 text-white font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center animate-bounce">
+            <span class="absolute -top-1.5 -right-1.5 bg-red-500 text-white font-bold text-[11.2px] w-5 h-5 rounded-full flex items-center justify-center animate-bounce">
               {fabTempChips.length}
             </span>
           )}
@@ -1887,7 +1890,7 @@ export default function App() {
               </div>
 
               {/* Version info footer */}
-              <div class="text-center text-[10px] text-gray-400 dark:text-gray-500 font-mono">
+              <div class="text-center text-[11.2px] text-gray-400 dark:text-gray-500 font-mono">
                 SHOPPING LIST MEOW STYLE • VERSÃO 1.0.0
               </div>
             </div>

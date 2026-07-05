@@ -243,7 +243,7 @@ export default function BarcodeScanner({
                 )}
               </button>
             </div>
-            <p class="text-[10px] text-gray-400 dark:text-gray-500">
+            <p class="text-[11.2px] text-gray-400 dark:text-gray-500">
               Conexão em tempo real com o banco de dados livre{' '}
               <span class="underline">Open Food Facts</span>.
             </p>
@@ -281,11 +281,11 @@ export default function BarcodeScanner({
                     <div class="text-xs font-semibold text-gray-800 dark:text-gray-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                       {item.name}
                     </div>
-                    <div class="text-[10px] text-gray-400 dark:text-gray-500 font-mono">
+                    <div class="text-[11.2px] text-gray-400 dark:text-gray-500 font-mono">
                       Código: {item.code} • {item.brand}
                     </div>
                   </div>
-                  <span class="text-[10px] bg-[#A8DF8E] dark:bg-emerald-800/30 text-[#3A4D39] dark:text-emerald-300 px-2 py-1 rounded-full font-semibold">
+                  <span class="text-[11.2px] bg-[#A8DF8E] dark:bg-emerald-800/30 text-[#3A4D39] dark:text-emerald-300 px-2 py-1 rounded-full font-semibold">
                     Simular
                   </span>
                 </button>

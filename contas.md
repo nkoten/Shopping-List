@@ -17,3 +17,9 @@ imprestimo mercado pago
 itaú
 123.59
 21 de julho
+
+nubank - estacio parcelado 3x
+197,89
+1- 27-08
+2- 27-09
+3- 27-10
